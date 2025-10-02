@@ -1,31 +1,32 @@
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class Bai225ArithmeticOperations {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        String strNum1 = JOptionPane.showInputDialog(
+                null, "Enter number 1:", "First number", JOptionPane.QUESTION_MESSAGE);
+        String strNum2 = JOptionPane.showInputDialog(
+                null, "Enter number 2:", "Second number", JOptionPane.QUESTION_MESSAGE);
 
-        System.out.print("1st number: ");
-        double num1 = scanner.nextDouble();
+        double firstNum = Double.parseDouble(strNum1);
+        double secondNum = Double.parseDouble(strNum2);
 
-        System.out.print("2nd number: ");
-        double num2 = scanner.nextDouble();
+        double sum = firstNum + secondNum;
+        double difference = Math.abs(firstNum - secondNum);
+        double product = firstNum * secondNum;
 
-        double sum = num1 + num2;
-        double difference = Math.abs(num1 - num2); // cleaner way
-        double product = num1 * num2;
+        String result = "Results:\n"
+                + "Sum = " + sum + "\n"
+                + "Difference = " + difference + "\n"
+                + "Product = " + product + "\n";
 
-        System.out.println("The sum is " + sum);
-        System.out.println("The difference is " + difference);
-        System.out.println("The product is " + product);
-
-        if (num2 != 0) {
-            double quotient = num1 / num2;
-            System.out.println("The quotient is " + quotient);
+        if (secondNum != 0) {
+            double quotient = firstNum / secondNum;
+            result += "Quotient = " + quotient;
         } else {
-            System.out.println("Division by 0 is not allowed.");
+            result += "Quotient = Division by zero is not allowed!";
         }
 
-        scanner.close();
+        JOptionPane.showMessageDialog(
+                null, result, "Arithmetic Operations", JOptionPane.INFORMATION_MESSAGE);
     }
 }
-
