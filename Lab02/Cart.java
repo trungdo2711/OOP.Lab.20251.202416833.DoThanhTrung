@@ -31,6 +31,7 @@ public class Cart {
     }
 
     public void printCart() {
+        System.out.println("***********************CART***********************");
         System.out.println("Ordered Items:");
         if (itemsOrdered.isEmpty()) {
             System.out.println("The cart is empty.");
@@ -40,5 +41,6 @@ public class Cart {
             }
         }
         System.out.println("Total cost: " + String.format("%.2f", totalCost()) + "$");
+        System.out.println("***************************************************");
     }
 }
