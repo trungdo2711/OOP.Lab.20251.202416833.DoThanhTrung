@@ -1,0 +1,6 @@
+Score: 9/10
+Comments: Trong report:
+- B2.2.6:
++ Pt bậc 2 thiếu TH 1 nghiệm & vô nghiệm
++ Hệ pt vẫn cần demo thì mới biết work well khi vô nghiệm & vô số nghiệm chứ
+- B6.4 nếu input là string thì chỉ nhận viết hoa chữ đầu
