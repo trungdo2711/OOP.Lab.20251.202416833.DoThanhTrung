@@ -82,4 +82,7 @@ public class DigitalVideoDisc2 {
         return false;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

@@ -1,5 +1,7 @@
 package hust.soict.cybersec.test.disc.TestPassingParameter;
 
+import hust.soict.cybersec.aims.disc.DigitalVideoDisc.DigitalVideoDisc2;
+
 public class TestPassingParameter {
 
     public static void main(String[] args) {
