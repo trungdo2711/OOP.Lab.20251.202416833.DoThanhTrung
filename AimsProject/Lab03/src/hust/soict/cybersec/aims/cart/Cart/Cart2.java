@@ -17,7 +17,7 @@ public class Cart2 {
         }
     }
 
-    public void addDigitalVideoDisc(ArrayList<DigitalVideoDisc2> dvdList) {
+    public void addDigitalVideoDiscByArrayList(ArrayList<DigitalVideoDisc2> dvdList) {
         int availableSlots = MAX_NUMBERS_ORDERED - itemsOrdered.size();
         if (availableSlots <= 0) {
             System.out.println("The cart is full.");
@@ -35,7 +35,7 @@ public class Cart2 {
         }
     }
 
-    public void addDigitalVideoDisc(DigitalVideoDisc2... discs) {
+    public void addDigitalVideoDiscByVariable(DigitalVideoDisc2... discs) {
         int availableSlots = MAX_NUMBERS_ORDERED - itemsOrdered.size();
         if (availableSlots <= 0) {
             System.out.println("The cart is full.");
@@ -55,7 +55,7 @@ public class Cart2 {
         }
     }
 
-    public void addDigitalVideoDisc(DigitalVideoDisc2 dvd1, DigitalVideoDisc2 dvd2) {
+    public void addDigitalVideoDiscByTwo(DigitalVideoDisc2 dvd1, DigitalVideoDisc2 dvd2) {
         if (MAX_NUMBERS_ORDERED - itemsOrdered.size() >= 2) {
             itemsOrdered.add(dvd1);
             itemsOrdered.add(dvd2);
