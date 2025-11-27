@@ -1,28 +1,43 @@
 package hust.soict.cybersec.aims.store.Store;
 
-import hust.soict.cybersec.aims.disc.DigitalVideoDisc.DigitalVideoDisc2;
+import hust.soict.cybersec.aims.media.DigitalVideoDisc2;
+import hust.soict.cybersec.aims.media.Media;
 
 import java.util.ArrayList;
 
 public class Store{
-    private ArrayList<DigitalVideoDisc2> itemsInStore;
+    private ArrayList<Media> itemsInStore;
 
     public Store(){
         this.itemsInStore = new ArrayList<>();
     }
 
-    public void addDVD(DigitalVideoDisc2 dvd){
-        this.itemsInStore.add(dvd);
-        System.out.println("The disc " + dvd.getTitle() + " has been added to the store. ");
-    }
-
-    public void removeDVD(DigitalVideoDisc2 dvd){
-        if (itemsInStore.remove(dvd)){
-            System.out.println("The disc " + dvd.getTitle() + " has been removed from the store");
+    public void addMedia(Media media){
+        if (itemsInStore.contains(media)){
+            System.out.println("Media is already added");
         }
         else{
-            System.out.println("The dvd " + dvd.getTitle() + " is not in the store.");
+            itemsInStore.add(media);
+            System.out.println("Media " + media.getTitle() + " added");
         }
     }
 
+    public void removeMedia(Media media){
+        if (itemsInStore.contains(media)){
+            itemsInStore.remove(media);
+            System.out.println("Media " + media.getTitle() + " removed");
+        }
+        else{
+            System.out.println("Media " + media.getTitle() + " is not in the store");
+        }
+    }
+
+    public Media search (String title){
+        for (Media media : itemsInStore){
+            if (media.getTitle().equals(title)){
+                return media;
+            }
+        }
+        return null;
+    }
 }
