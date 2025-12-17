@@ -1,7 +1,7 @@
 package hust.soict.cybersec.aims.screen.controller;
 
 import hust.soict.cybersec.aims.cart.Cart.Cart2;
-import hust.soict.cybersec.aims.exception.PlayerException;
+import hust.soict.cybersec.aims.exception.PlayerException; // Import Custom Exception
 import hust.soict.cybersec.aims.media.*;
 import hust.soict.cybersec.aims.screen.StoreScreenFX;
 import hust.soict.cybersec.aims.store.Store.Store;
@@ -15,7 +15,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 public class CartScreenController {
@@ -91,6 +90,8 @@ public class CartScreenController {
 
         // Filter Logic
         tfFilter.textProperty().addListener((observable, oldValue, newValue) -> showFilteredMedia(newValue));
+
+        // Update filter when Radio Button changes
         radioBtnFilterId.selectedProperty().addListener((obs, oldV, newV) -> showFilteredMedia(tfFilter.getText()));
         radioBtnFilterTitle.selectedProperty().addListener((obs, oldV, newV) -> showFilteredMedia(tfFilter.getText()));
     }
@@ -121,28 +122,15 @@ public class CartScreenController {
         if (media == null) return;
 
         if (media instanceof Playable) {
-            // 1. VALIDATE LENGTH
-            int len = 0;
-            if (media instanceof DigitalVideoDisc2) {
-                len = ((DigitalVideoDisc2) media).getLength();
-            } else if (media instanceof CompactDisc) {
-                len = ((CompactDisc) media).getLength();
-            }
-
-            if (len <= 0) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Playback Error");
-                alert.setContentText("ERROR: " + media.getTitle() + " has invalid length (" + len + ")!");
-                setStyle(alert);
-                alert.showAndWait();
-                return;
-            }
-
-            // 2. PLAY WITH FULL INFO
             try {
+                // 1. CALL BACKEND PLAY()
+                // This triggers validation inside DigitalVideoDisc or CompactDisc
+                // It throws PlayerException if length <= 0
+                ((Playable) media).play();
+
+                // 2. SHOW DIALOG IF SUCCESSFUL
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Playing Media");
+                alert.setTitle("AIMS Player");
                 alert.setHeaderText("Now Playing: " + media.getTitle());
 
                 StringBuilder info = new StringBuilder();
@@ -152,7 +140,6 @@ public class CartScreenController {
                 if (media instanceof DigitalVideoDisc2) {
                     DigitalVideoDisc2 dvd = (DigitalVideoDisc2) media;
                     info.append("Director: ").append(dvd.getDirector()).append("\n");
-                    // --- FIXED: ADDED DVD LENGTH ---
                     info.append("Length:   ").append(dvd.getLength()).append(" mins");
 
                 } else if (media instanceof CompactDisc) {
@@ -165,20 +152,19 @@ public class CartScreenController {
                     }
                 }
 
-                // Use label for consistent styling with Store
                 Label label = new Label(info.toString());
                 label.setWrapText(true);
                 label.setStyle("-fx-font-family: 'Consolas', monospace; -fx-font-size: 14px;");
 
                 alert.getDialogPane().setContent(label);
-
                 setStyle(alert);
                 alert.showAndWait();
 
-            } catch (Exception e) {
+            } catch (PlayerException e) {
+                // 3. CATCH PLAYBACK ERROR
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Playback Error");
+                alert.setTitle("Playback Error");
+                alert.setHeaderText("Cannot play media!");
                 alert.setContentText(e.getMessage());
                 setStyle(alert);
                 alert.showAndWait();
@@ -203,6 +189,7 @@ public class CartScreenController {
             setStyle(alert);
             alert.showAndWait();
         } else {
+            // Use cart.placeOrder() if available, otherwise manual alert
             Alert alert = new Alert(AlertType.INFORMATION, "Total Cost: " + String.format("%.2f $", cart.totalCost()));
             alert.setTitle("Order Placed");
             alert.setHeaderText("Thank you for your order!");
@@ -221,16 +208,30 @@ public class CartScreenController {
     }
 
     private void showFilteredMedia(String keyword) {
-        String lowerCaseKeyword = keyword.toLowerCase();
-        filteredItems.setPredicate(media -> {
-            if (lowerCaseKeyword.isEmpty()) return true;
-            if (radioBtnFilterId.isSelected()) {
-                try { return String.valueOf(media.getID()).startsWith(lowerCaseKeyword); }
-                catch (NumberFormatException e) { return false; }
-            } else if (radioBtnFilterTitle.isSelected()) {
-                return media.getTitle().toLowerCase().contains(lowerCaseKeyword);
+        if (keyword == null || keyword.isEmpty()) {
+            filteredItems.setPredicate(null);
+            return;
+        }
+
+        if (radioBtnFilterId.isSelected()) {
+            try {
+                int id = Integer.parseInt(keyword);
+
+                filteredItems.setPredicate(media -> media.getID() == id);
+
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Input Error");
+                alert.setHeaderText("Invalid ID Format");
+                alert.setContentText("Please enter a valid numeric ID.\nYou entered: " + keyword);
+                setStyle(alert);
+                alert.showAndWait();
+                filteredItems.setPredicate(null);
             }
-            return false;
-        });
+        } else {
+            filteredItems.setPredicate(media ->
+                    media.getTitle().toLowerCase().contains(keyword.toLowerCase())
+            );
+        }
     }
 }

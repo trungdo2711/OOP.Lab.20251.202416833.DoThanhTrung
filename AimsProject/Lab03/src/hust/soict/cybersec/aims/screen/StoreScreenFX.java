@@ -1,6 +1,7 @@
 package hust.soict.cybersec.aims.screen;
 
 import hust.soict.cybersec.aims.cart.Cart.Cart2;
+import hust.soict.cybersec.aims.exception.DuplicateItemException;
 import hust.soict.cybersec.aims.exception.PlayerException;
 import hust.soict.cybersec.aims.media.*;
 import hust.soict.cybersec.aims.store.Store.Store;
@@ -11,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import javax.naming.LimitExceededException;
 
 public class StoreScreenFX extends Application {
 
@@ -211,36 +214,34 @@ public class StoreScreenFX extends Application {
             Button btnAddToCart = new Button("Add to Cart");
             btnAddToCart.getStyleClass().add("button");
 
-            // --- UPDATED ADD LOGIC: LIMIT 20 ITEMS ---
             btnAddToCart.setOnAction(e -> {
-                // 1. Check Limit
-                if (cart.getItemsOrdered().size() >= 20) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Cart Full");
-                    alert.setHeaderText("Cart Limit Reached");
-                    alert.setContentText("You cannot add more than 20 items to the cart.");
-                    styleAlert(alert);
-                    alert.showAndWait();
-                    return; // Stop execution
-                }
-
-                // 2. Check Duplicate
-                if (cart.getItemsOrdered().contains(media)) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Cart Update");
-                    alert.setHeaderText("Duplicate Item");
-                    alert.setContentText(media.getTitle() + " is already in your cart!");
-                    styleAlert(alert);
-                    alert.showAndWait();
-                } else {
-                    // 3. Add Item
+                try {
                     cart.addMedia(media);
+
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Cart Update");
                     alert.setHeaderText("Success");
                     alert.setContentText(media.getTitle() + " has been added to the cart.");
                     styleAlert(alert);
                     alert.showAndWait();
+
+                } catch (LimitExceededException ex) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Cart Full");
+                    alert.setHeaderText("Limit Reached");
+                    alert.setContentText(ex.getMessage());
+                    styleAlert(alert);
+                    alert.showAndWait();
+
+                } catch (DuplicateItemException ex) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Cart Update");
+                    alert.setHeaderText("Duplicate Item");
+                    alert.setContentText(ex.getMessage());
+                    styleAlert(alert);
+                    alert.showAndWait();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             });
 
@@ -249,32 +250,18 @@ public class StoreScreenFX extends Application {
                 btnPlay.getStyleClass().add("button");
 
                 btnPlay.setOnAction(e -> {
-                    // Playback Validation
-                    int len = 0;
-                    if (media instanceof DigitalVideoDisc2) {
-                        len = ((DigitalVideoDisc2) media).getLength();
-                    } else if (media instanceof CompactDisc) {
-                        len = ((CompactDisc) media).getLength();
-                    }
+                    try {
+                        ((Playable) media).play();
 
-                    if (len <= 0) {
+                        showPlayDialog(media);
+
+                    } catch (PlayerException ex) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
                         alert.setHeaderText("Playback Error");
-                        alert.setContentText("ERROR: " + media.getTitle() + " has invalid length (" + len + ")!");
+                        alert.setContentText(ex.getMessage());
                         styleAlert(alert);
                         alert.showAndWait();
-                    } else {
-                        try {
-                            showPlayDialog(media);
-                        } catch (PlayerException ex) {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Error");
-                            alert.setHeaderText("Playback Error");
-                            alert.setContentText(ex.getMessage());
-                            styleAlert(alert);
-                            alert.showAndWait();
-                        }
                     }
                 });
                 container.getChildren().addAll(btnAddToCart, btnPlay);
@@ -284,7 +271,6 @@ public class StoreScreenFX extends Application {
 
             this.getChildren().addAll(title, cost, container);
         }
-
         private void styleAlert(Alert alert) {
             DialogPane dialogPane = alert.getDialogPane();
             try {

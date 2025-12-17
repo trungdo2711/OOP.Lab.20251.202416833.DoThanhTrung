@@ -1,35 +1,38 @@
 package hust.soict.cybersec.aims.cart.Cart;
 
+import hust.soict.cybersec.aims.exception.DuplicateItemException;
 import hust.soict.cybersec.aims.media.Media;
-import hust.soict.cybersec.aims.media.MediaComparatorByCostTitle;
-import hust.soict.cybersec.aims.media.MediaComparatorByTitleCost;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.naming.LimitExceededException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import static hust.soict.cybersec.aims.media.Media.COMPARE_BY_COST_TITLE;
 import static hust.soict.cybersec.aims.media.Media.COMPARE_BY_TITLE_COST;
 
 public class Cart2 {
+    public static final int MAX_NUMBERS_ORDERED = 20;
     private ArrayList<Media> itemsOrdered = new ArrayList<>();
 
-    public void addMedia(Media media){boolean isExist = false;
+    // --- MODIFIED METHOD: Throws exceptions instead of just printing ---
+    public void addMedia(Media media) throws LimitExceededException, DuplicateItemException {
+        // 1. Check if Cart is Full
+        if (itemsOrdered.size() >= MAX_NUMBERS_ORDERED) {
+            throw new LimitExceededException("ERROR: The cart is full (limit " + MAX_NUMBERS_ORDERED + ").");
+        }
+
+        // 2. Check for Duplicates (based on Title)
         for (Media item : itemsOrdered) {
             if (item.getTitle().equalsIgnoreCase(media.getTitle())) {
-                isExist = true;
-                break;
+                throw new DuplicateItemException("ERROR: " + media.getTitle() + " is already in the cart!");
             }
         }
-        if (isExist) {
-            System.out.println("Media already exists");
-        } else {
-            itemsOrdered.add(media);
-            System.out.println("Media " + media.getTitle() + " added");
-        }
+
+        // 3. Add Item if no errors
+        itemsOrdered.add(media);
+        System.out.println("Media " + media.getTitle() + " added");
     }
 
     public void removeMedia(Media media) {
@@ -111,15 +114,13 @@ public class Cart2 {
             Collections.sort(itemsOrdered, COMPARE_BY_TITLE_COST);
             System.out.println("Selected sort by title.");
         }
-        if (sort.equals("cost")){
+        else if (sort.equals("cost")){
             System.out.println("Selected sort by cost.");
             Collections.sort(itemsOrdered, COMPARE_BY_COST_TITLE);
         }
         else{
             System.out.println("Invalid sort type. Please choose between title and cost.");
         }
-        System.out.println("Cart successfully sorted by " + sortType + ".");
-        printCart();
     }
 
     public void empty(){
@@ -128,23 +129,5 @@ public class Cart2 {
 
     public ObservableList<Media> getItemsOrdered() {
         return FXCollections.observableList(itemsOrdered);
-    }
-
-    public String placeOrder() {
-
-        if (getItemsOrdered().isEmpty()) {
-            return "ERROR: Your cart is empty. Please add items before placing an order.";
-        }
-
-        double total = totalCost();
-
-        empty();
-
-        return String.format(
-                "Order successfully processed!\n" +
-                        "Total Amount Paid: %.2f $.\n" +
-                        "Thank you for shopping with us! Your cart is now empty.",
-                total
-        );
     }
 }

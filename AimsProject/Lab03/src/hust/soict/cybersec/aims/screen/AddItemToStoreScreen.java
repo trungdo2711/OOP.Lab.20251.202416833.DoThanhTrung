@@ -39,10 +39,12 @@ public abstract class AddItemToStoreScreen extends Stage {
         tfCategory = new TextField();
         tfCost = new TextField();
 
+        // Row 0, 1, 2 are standard fields
         addInputField(grid, "Title:", tfTitle, 0);
         addInputField(grid, "Category:", tfCategory, 1);
         addInputField(grid, "Cost:", tfCost, 2);
 
+        // Child classes will add their fields starting at Row 3
         addSpecificFields(grid);
 
         root.getChildren().add(grid);
@@ -65,10 +67,12 @@ public abstract class AddItemToStoreScreen extends Stage {
         grid.add(inputControl, 1, row);
     }
 
+    // Abstract methods to be implemented by Child Classes
     protected abstract String getHeaderText();
     protected abstract void addSpecificFields(GridPane grid);
     protected abstract void handleAdd();
 
+    // Success Alert
     protected void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
@@ -76,5 +80,14 @@ public abstract class AddItemToStoreScreen extends Stage {
         alert.setContentText(message);
         alert.showAndWait();
         this.close();
+    }
+
+    // --- NEW: Error Alert Helper for Exceptions ---
+    protected void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Requirement: Information Alert for Input Errors
+        alert.setTitle("Input Error");
+        alert.setHeaderText("Invalid Input");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

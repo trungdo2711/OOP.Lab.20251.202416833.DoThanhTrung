@@ -1,10 +1,12 @@
 package hust.soict.cybersec.aims;
 
 import hust.soict.cybersec.aims.cart.Cart.Cart2;
+import hust.soict.cybersec.aims.exception.DuplicateItemException;
 import hust.soict.cybersec.aims.exception.PlayerException;
 import hust.soict.cybersec.aims.media.*;
 import hust.soict.cybersec.aims.store.Store.Store;
 
+import javax.naming.LimitExceededException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -13,7 +15,7 @@ public class Aims2 {
     private static Cart2 cart = new Cart2();
     private static Store store = new Store();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws LimitExceededException, DuplicateItemException {
 
         DigitalVideoDisc2 dvd1 = new DigitalVideoDisc2( "The Lion King", "Animation", "Roger Allers", 87, 19.95f);
         DigitalVideoDisc2 dvd2 = new DigitalVideoDisc2( "Star Wars", "Science Fiction", "George Lucas", 87, 24.95f);
@@ -96,7 +98,7 @@ public class Aims2 {
         System.out.println("Please choose a number: 0-1-2-3");
     }
 
-    public static void storeMenu(Scanner scanner) {
+    public static void storeMenu(Scanner scanner) throws LimitExceededException, DuplicateItemException {
         boolean back = false;
         while(!back){
             System.out.println("\n--- STORE ITEMS ---");
@@ -178,7 +180,7 @@ public class Aims2 {
         }
     }
 
-    public static void mediaDetailsMenu(Scanner scanner, Media media) {
+    public static void mediaDetailsMenu(Scanner scanner, Media media) throws LimitExceededException, DuplicateItemException {
         boolean back = false;
         while (!back){
             System.out.println("\n--- MEDIA DETAILS MENU ---");

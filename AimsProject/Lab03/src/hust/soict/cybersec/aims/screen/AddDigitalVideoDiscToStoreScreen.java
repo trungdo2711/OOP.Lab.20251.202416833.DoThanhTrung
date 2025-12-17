@@ -15,29 +15,44 @@ public class AddDigitalVideoDiscToStoreScreen extends AddItemToStoreScreen {
 
     @Override
     protected String getHeaderText() {
-        return "Add DVD";
+        return "Add DVD to Store";
     }
 
     @Override
     protected void addSpecificFields(GridPane grid) {
         tfDirector = new TextField();
-        tfLength = new TextField();
+        tfDirector.setPromptText("Director Name");
 
+        tfLength = new TextField();
+        tfLength.setPromptText("Length (minutes)");
+
+        // Add specific fields starting from Row 3
         addInputField(grid, "Director:", tfDirector, 3);
-        addInputField(grid, "Length (mins):", tfLength, 4);
+        addInputField(grid, "Length:", tfLength, 4);
     }
 
     @Override
     protected void handleAdd() {
-        String title = tfTitle.getText();
-        String category = tfCategory.getText();
-        float cost = Float.parseFloat(tfCost.getText());
-        String director = tfDirector.getText();
-        int length = Integer.parseInt(tfLength.getText());
+        try {
+            // 1. Get Text Inputs
+            String title = tfTitle.getText();
+            String category = tfCategory.getText();
+            String director = tfDirector.getText();
 
-        DigitalVideoDisc2 newDVD = new DigitalVideoDisc2(title, category, director, length, cost);
+            // 2. Parse Numeric Inputs (catches NumberFormatException)
+            float cost = Float.parseFloat(tfCost.getText());
+            int length = Integer.parseInt(tfLength.getText());
 
-        store.addMedia(newDVD);
-        showAlert("DVD '" + title + "' added to store successfully!");
+            // 3. Create and Add DVD
+            DigitalVideoDisc2 dvd = new DigitalVideoDisc2(title, category, director, length, cost);
+            store.addMedia(dvd);
+
+            // 4. Show Success
+            showAlert("DVD '" + title + "' has been added successfully!");
+
+        } catch (NumberFormatException e) {
+            // 5. Handle Invalid Numbers
+            showErrorAlert("Invalid Input!\n• Cost must be a number (e.g., 19.95)\n• Length must be an integer (e.g., 120)");
+        }
     }
 }

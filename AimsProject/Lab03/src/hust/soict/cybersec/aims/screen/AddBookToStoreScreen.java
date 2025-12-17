@@ -14,30 +14,37 @@ public class AddBookToStoreScreen extends AddItemToStoreScreen {
 
     @Override
     protected String getHeaderText() {
-        return "Add Book";
+        return "Add Book to Store";
     }
 
     @Override
     protected void addSpecificFields(GridPane grid) {
         tfAuthors = new TextField();
-        tfAuthors.setPromptText("e.g. Author A, Author B");
+        tfAuthors.setPromptText("Authors (comma separated)");
+        // Add to Row 3 (Since 0, 1, 2 are taken by Title, Category, Cost)
         addInputField(grid, "Authors:", tfAuthors, 3);
     }
 
     @Override
     protected void handleAdd() {
-        String title = tfTitle.getText();
-        String category = tfCategory.getText();
-        float cost = Float.parseFloat(tfCost.getText());
+        try {
+            // 1. Get Inputs
+            String title = tfTitle.getText();
+            String category = tfCategory.getText();
 
-        Book newBook = new Book(title, category, cost);
+            // 2. Parse Numbers (This triggers NumberFormatException)
+            float cost = Float.parseFloat(tfCost.getText());
 
-        String[] authors = tfAuthors.getText().split(",");
-        for (String author : authors) {
-            newBook.addAuthor(author.trim());
+            // 3. Logic
+            Book book = new Book(title, category, cost);
+            // (Optional: Add author parsing logic here)
+
+            store.addMedia(book);
+            showAlert("Book added successfully!");
+
+        } catch (NumberFormatException e) {
+            // 4. Use the new Helper method from Parent
+            showErrorAlert("Cost must be a valid number! (e.g. 12.50)");
         }
-
-        store.addMedia(newBook);
-        showAlert("Book '" + title + "' added to store successfully!");
     }
 }
