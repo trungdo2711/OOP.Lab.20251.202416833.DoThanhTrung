@@ -1,0 +1,167 @@
+/* ROOT: General background and font */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-background-color: #F4F4F4;
+}
+
+/* LABELS */
+.label {
+    -fx-text-fill: #333333;
+}
+
+.label-header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #009688; /* Teal Header */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+
+.label-cost {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #E53935; /* Red cost */
+}
+
+/* BUTTONS */
+.button {
+    -fx-background-color: #009688;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 4px;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: #00796B;
+}
+
+.button:pressed {
+    -fx-background-color: #004D40;
+    -fx-effect: none;
+}
+
+.button:disabled {
+    -fx-background-color: #BDBDBD;
+    -fx-text-fill: #757575;
+    -fx-effect: none;
+}
+
+/* DANGER BUTTON (Red) */
+.button-danger {
+    -fx-background-color: #E53935;
+}
+
+.button-danger:hover {
+    -fx-background-color: #C62828;
+}
+
+/* TABLE VIEW (Fixes Invisible Text) */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-base: #009688;
+    -fx-control-inner-background: #009688;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #009688;
+    -fx-background-radius: 4px 4px 0 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* !!! CRITICAL FIX: Forces table text to be BLACK !!! */
+.table-view .table-cell {
+    -fx-text-fill: black !important;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #E0F2F1; /* Light Teal Stripe */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #B2DFDB;
+    -fx-text-fill: black !important;
+    -fx-font-weight: bold;
+}
+
+/* Ensure selected items also have black text */
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: black !important;
+}
+
+/* CARD STYLING */
+.media-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-padding: 15;
+    -fx-alignment: center;
+}
+
+.media-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,150,136,0.4), 8, 0, 0, 3);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.media-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* ========================================= */
+/* NEW: BEAUTIFUL DIALOG STYLES              */
+/* ========================================= */
+
+.dialog-pane {
+    -fx-background-color: white;
+    -fx-border-color: #009688;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #009688;
+    -fx-padding: 15px;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.dialog-pane .content {
+    -fx-padding: 20px;
+    -fx-background-color: white;
+}
+
+.dialog-pane .content .label {
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Consolas', 'Monospaced', sans-serif;
+}
+
+.dialog-pane .button-bar {
+    -fx-background-color: #F4F4F4;
+    -fx-padding: 10px;
+}

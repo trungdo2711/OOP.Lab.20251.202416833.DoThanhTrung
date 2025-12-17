@@ -5,17 +5,12 @@ import hust.soict.cybersec.aims.exception.PlayerException;
 import hust.soict.cybersec.aims.media.*;
 import hust.soict.cybersec.aims.store.Store.Store;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.util.List;
 
 public class StoreScreenFX extends Application {
 
@@ -35,41 +30,84 @@ public class StoreScreenFX extends Application {
     }
 
     private static void initSetup() {
-        DigitalVideoDisc2 dvd1 = new DigitalVideoDisc2("The Lion King", "Animation", "Roger Allers", 87, 19.95f);
-        DigitalVideoDisc2 dvd2 = new DigitalVideoDisc2("Star Wars", "Science Fiction", "George Lucas", 87, 24.95f);
-        DigitalVideoDisc2 dvd3 = new DigitalVideoDisc2("Aladin", "Animation", 18.99f);
-        store.addMedia(dvd1);
-        store.addMedia(dvd2);
-        store.addMedia(dvd3);
+        if (store.getItemsInStore().isEmpty()) {
+            store.addMedia(new DigitalVideoDisc2("The Lion King", "Animation", "Roger Allers", 87, 19.95f));
+            store.addMedia(new DigitalVideoDisc2("Star Wars", "Sci-Fi", "George Lucas", 87, 24.95f));
+            store.addMedia(new DigitalVideoDisc2("Aladin", "Animation", 18.99f));
+            store.addMedia(new DigitalVideoDisc2("Inception", "Sci-Fi", "Christopher Nolan", 148, 15.50f));
+            store.addMedia(new DigitalVideoDisc2("The Matrix", "Sci-Fi", "Wachowskis", 136, 12.99f));
+            store.addMedia(new DigitalVideoDisc2("Interstellar", "Sci-Fi", "Christopher Nolan", 169, 18.00f));
+            store.addMedia(new DigitalVideoDisc2("Frozen", "Animation", "Chris Buck", 102, 20.00f));
+            store.addMedia(new DigitalVideoDisc2("Avatar", "Sci-Fi", "James Cameron", 162, 22.50f));
+            store.addMedia(new DigitalVideoDisc2("Titanic", "Romance", "James Cameron", 195, 18.50f));
+            store.addMedia(new DigitalVideoDisc2("The Avengers", "Action", "Joss Whedon", 143, 21.00f));
+            store.addMedia(new DigitalVideoDisc2("Up", "Animation", "Pete Docter", 96, 15.00f));
+            store.addMedia(new DigitalVideoDisc2("Wall-E", "Animation", "Andrew Stanton", 98, 16.00f));
 
-        Book book1 = new Book("The Age of Innocence", "Literature", 12.50f);
-        Book book2 = new Book("Snow Crash", "Science Fiction", 9.99f);
-        Book book3 = new Book("And Then There Were None", "Mystery", 8.75f);
-        store.addMedia(book1);
-        store.addMedia(book2);
-        store.addMedia(book3);
+            // --- BOOKS ---
+            store.addMedia(new Book("The Age of Innocence", "Literature", 12.50f));
+            store.addMedia(new Book("Snow Crash", "Sci-Fi", 9.99f));
+            store.addMedia(new Book("Effective Java", "Programming", 45.00f));
+            store.addMedia(new Book("Clean Code", "Programming", 40.00f));
+            store.addMedia(new Book("Thinking in Java", "Programming", 35.00f));
+            store.addMedia(new Book("Design Patterns", "Programming", 50.00f));
+            store.addMedia(new Book("The Great Gatsby", "Literature", 10.00f));
+            store.addMedia(new Book("1984", "Sci-Fi", 8.50f));
+            store.addMedia(new Book("Brave New World", "Sci-Fi", 9.00f));
+            store.addMedia(new Book("Head First Java", "Programming", 28.00f));
 
-        CompactDisc cd1 = new CompactDisc("Retro Future", "Synthwave", "Neon Rider", 18.99f, 0, "None");
-        cd1.addTrack(new Track("Grid Runners", 285));
+            // --- CDs ---
+            CompactDisc cd1 = new CompactDisc("Retro Future", "Synthwave", "Neon Rider", 18.99f, 0, "None");
+            cd1.addTrack(new Track("Grid Runners", 285));
+            cd1.addTrack(new Track("Cyber City", 300));
+            store.addMedia(cd1);
 
-        CompactDisc cd2 = new CompactDisc("Echoes in the Canyon", "Folk Rock", "The Wanderer Collective", 12.50f, 0, "None");
-        cd2.addTrack(new Track("Dusty Road Blues", 205));
-        store.addMedia(cd1);
-        store.addMedia(cd2);
+            CompactDisc cd2 = new CompactDisc("Thriller", "Pop", "Michael Jackson", 15.00f, 0, "None");
+            cd2.addTrack(new Track("Thriller", 357));
+            cd2.addTrack(new Track("Beat It", 258));
+            cd2.addTrack(new Track("Billie Jean", 294));
+            store.addMedia(cd2);
+
+            CompactDisc cd3 = new CompactDisc("Back in Black", "Rock", "AC/DC", 14.50f, 0, "None");
+            cd3.addTrack(new Track("Hells Bells", 312));
+            cd3.addTrack(new Track("Back in Black", 255));
+            store.addMedia(cd3);
+
+            CompactDisc cd4 = new CompactDisc("Abbey Road", "Rock", "The Beatles", 25.00f, 0, "None");
+            cd4.addTrack(new Track("Come Together", 259));
+            cd4.addTrack(new Track("Something", 183));
+            store.addMedia(cd4);
+
+            // --- ERROR TESTING ---
+            store.addMedia(new DigitalVideoDisc2("Broken Movie", "Error", "Unknown", 0, 5.00f));
+        }
     }
 
     public void show() {
-        Stage primaryStage = new Stage();
-        start(primaryStage);
+        try {
+            start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
         root.setTop(new NorthVBox(store, cart));
-        root.setCenter(new CenterFlowPane(store, cart));
+
+        ScrollPane scrollPane = new ScrollPane(new CenterFlowPane(store, cart));
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color: transparent;");
+        root.setCenter(scrollPane);
 
         Scene scene = new Scene(root, 1024, 768);
+        try {
+            scene.getStylesheets().add(getClass().getResource("/hust/soict/cybersec/aims/screen/view/storestyle.css").toExternalForm());
+        } catch (Exception e) {
+            // Warning suppressed for cleaner console
+        }
+
         primaryStage.setTitle("Store");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -77,7 +115,7 @@ public class StoreScreenFX extends Application {
 
     private static class NorthVBox extends VBox {
         public NorthVBox(Store store, Cart2 cart) {
-            this.getChildren().addAll(new StoreMenuBar(store), new StoreHeader(cart));
+            this.getChildren().addAll(new StoreMenuBar(store), new StoreHeader(cart, store));
         }
     }
 
@@ -102,7 +140,7 @@ public class StoreScreenFX extends Application {
             itemViewStore.setOnAction(e -> new StoreScreenFX(store).show());
 
             MenuItem itemViewCart = new MenuItem("View Cart");
-            itemViewCart.setOnAction(e -> new CartScreen(cart).show());
+            itemViewCart.setOnAction(e -> new CartScreen(cart, store));
 
             menuOptions.getItems().addAll(itemViewStore, itemViewCart);
             this.getMenus().add(menuOptions);
@@ -110,18 +148,21 @@ public class StoreScreenFX extends Application {
     }
 
     private static class StoreHeader extends HBox {
-        public StoreHeader(Cart2 cart) {
+        public StoreHeader(Cart2 cart, Store store) {
             this.setSpacing(10);
-            this.setPadding(new javafx.geometry.Insets(10));
+            this.setPadding(new Insets(10));
             this.setAlignment(Pos.CENTER_LEFT);
 
-            Text title = new Text("AIMS");
-            title.setFont(Font.font("Segoe UI", FontWeight.BOLD, 50));
-            title.setFill(Color.CYAN);
+            Label title = new Label("AIMS");
+            title.getStyleClass().add("label-header");
 
             Button btnViewCart = new Button("View Cart");
             btnViewCart.setPrefSize(100, 50);
-            btnViewCart.setOnAction(e -> new CartScreen(cart).show());
+            btnViewCart.getStyleClass().add("button");
+
+            btnViewCart.setOnAction(e -> {
+                new CartScreen(cart, store);
+            });
 
             Region rigidLeft = new Region();
             rigidLeft.setPrefSize(10, 10);
@@ -136,13 +177,13 @@ public class StoreScreenFX extends Application {
 
     private static class CenterFlowPane extends FlowPane {
         public CenterFlowPane(Store store, Cart2 cart) {
-            this.setHgap(10);
-            this.setVgap(10);
-            this.setPadding(new javafx.geometry.Insets(10));
+            this.setHgap(20);
+            this.setVgap(20);
+            this.setPadding(new Insets(20));
             this.setAlignment(Pos.TOP_LEFT);
+            this.setStyle("-fx-background-color: transparent;");
 
-            List<Media> items = store.getItemsInStore();
-            for (Media media : items) {
+            for (Media media : store.getItemsInStore()) {
                 this.getChildren().add(new MediaStoreVBox(media, cart));
             }
         }
@@ -150,42 +191,90 @@ public class StoreScreenFX extends Application {
 
     private static class MediaStoreVBox extends VBox {
         public MediaStoreVBox(Media media, Cart2 cart) {
-            this.setSpacing(5);
-            this.setPadding(new javafx.geometry.Insets(5));
-            this.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: white;");
-            this.setPrefWidth(200);
-            this.setAlignment(Pos.TOP_CENTER);
+            this.getStyleClass().add("media-card");
+            this.setPrefWidth(300);
+            this.setSpacing(10);
+            this.setAlignment(Pos.CENTER);
 
             Label title = new Label(media.getTitle());
-            title.setFont(Font.font("Segoe UI", FontWeight.BOLD, 20));
+            title.setWrapText(true);
             title.setAlignment(Pos.CENTER);
+            title.getStyleClass().add("media-title");
 
             Label cost = new Label(String.format("%.2f $", media.getCost()));
             cost.setAlignment(Pos.CENTER);
+            cost.getStyleClass().add("label-cost");
 
-            HBox container = new HBox(10);
+            HBox container = new HBox(15);
             container.setAlignment(Pos.CENTER);
 
             Button btnAddToCart = new Button("Add to Cart");
+            btnAddToCart.getStyleClass().add("button");
+
+            // --- UPDATED ADD LOGIC: LIMIT 20 ITEMS ---
             btnAddToCart.setOnAction(e -> {
-                cart.addMedia(media);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Cart Update");
-                alert.setHeaderText(null);
-                alert.setContentText(media.getTitle() + " has been added to the cart.");
-                alert.showAndWait();
+                // 1. Check Limit
+                if (cart.getItemsOrdered().size() >= 20) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Cart Full");
+                    alert.setHeaderText("Cart Limit Reached");
+                    alert.setContentText("You cannot add more than 20 items to the cart.");
+                    styleAlert(alert);
+                    alert.showAndWait();
+                    return; // Stop execution
+                }
+
+                // 2. Check Duplicate
+                if (cart.getItemsOrdered().contains(media)) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Cart Update");
+                    alert.setHeaderText("Duplicate Item");
+                    alert.setContentText(media.getTitle() + " is already in your cart!");
+                    styleAlert(alert);
+                    alert.showAndWait();
+                } else {
+                    // 3. Add Item
+                    cart.addMedia(media);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Cart Update");
+                    alert.setHeaderText("Success");
+                    alert.setContentText(media.getTitle() + " has been added to the cart.");
+                    styleAlert(alert);
+                    alert.showAndWait();
+                }
             });
 
             if (media instanceof Playable) {
                 Button btnPlay = new Button("Play");
+                btnPlay.getStyleClass().add("button");
+
                 btnPlay.setOnAction(e -> {
-                    try {
-                        showPlayDialog(media);
-                    } catch (PlayerException ex) {
+                    // Playback Validation
+                    int len = 0;
+                    if (media instanceof DigitalVideoDisc2) {
+                        len = ((DigitalVideoDisc2) media).getLength();
+                    } else if (media instanceof CompactDisc) {
+                        len = ((CompactDisc) media).getLength();
+                    }
+
+                    if (len <= 0) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
-                        alert.setContentText(ex.getMessage());
+                        alert.setHeaderText("Playback Error");
+                        alert.setContentText("ERROR: " + media.getTitle() + " has invalid length (" + len + ")!");
+                        styleAlert(alert);
                         alert.showAndWait();
+                    } else {
+                        try {
+                            showPlayDialog(media);
+                        } catch (PlayerException ex) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Playback Error");
+                            alert.setContentText(ex.getMessage());
+                            styleAlert(alert);
+                            alert.showAndWait();
+                        }
                     }
                 });
                 container.getChildren().addAll(btnAddToCart, btnPlay);
@@ -196,9 +285,19 @@ public class StoreScreenFX extends Application {
             this.getChildren().addAll(title, cost, container);
         }
 
+        private void styleAlert(Alert alert) {
+            DialogPane dialogPane = alert.getDialogPane();
+            try {
+                dialogPane.getStylesheets().add(getClass().getResource("/hust/soict/cybersec/aims/screen/view/storestyle.css").toExternalForm());
+                dialogPane.getStyleClass().add("dialog-pane");
+            } catch (Exception ex) {
+                // Ignore missing CSS
+            }
+        }
+
         private void showPlayDialog(Media media) throws PlayerException {
             Dialog<Void> dialog = new Dialog<>();
-            dialog.setTitle("Playing Media");
+            dialog.setTitle("UPDATED PLAYER"); // Verify title updated
             dialog.setHeaderText("Now Playing: " + media.getTitle());
 
             StringBuilder info = new StringBuilder();
@@ -209,26 +308,41 @@ public class StoreScreenFX extends Application {
                 DigitalVideoDisc2 dvd = (DigitalVideoDisc2) media;
                 info.append("Director: ").append(dvd.getDirector()).append("\n");
                 info.append("Length:   ").append(dvd.getLength()).append(" mins\n");
+
             } else if (media instanceof CompactDisc) {
                 CompactDisc cd = (CompactDisc) media;
                 info.append("Artist:   ").append(cd.getArtist()).append("\n");
                 info.append("Length:   ").append(cd.getLength()).append(" mins\n");
                 info.append("\nTracks:\n");
                 for (Track track : cd.getTracks()) {
-                    info.append("- ").append(track.getTitle()).append(" (").append(track.getLength()).append("m)\n");
+                    info.append(" • ").append(track.getTitle()).append(" (").append(track.getLength()).append("m)\n");
                 }
             }
 
             Label content = new Label(info.toString());
-            content.setFont(Font.font("Consolas", FontWeight.NORMAL, 14));
             content.setWrapText(true);
+            content.setStyle("-fx-font-family: 'Consolas', monospace; -fx-font-size: 14px;");
 
-            ScrollPane scroll = new ScrollPane(content);
+            VBox contentBox = new VBox(content);
+            contentBox.setPadding(new Insets(10));
+
+            ScrollPane scroll = new ScrollPane(contentBox);
             scroll.setFitToWidth(true);
-            scroll.setPrefSize(400, 200);
+            scroll.setPrefSize(400, 300);
+            scroll.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
 
             dialog.getDialogPane().setContent(scroll);
             dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+
+            try {
+                dialog.getDialogPane().getStylesheets().add(
+                        getClass().getResource("/hust/soict/cybersec/aims/screen/view/storestyle.css").toExternalForm()
+                );
+                dialog.getDialogPane().getStyleClass().add("dialog-pane");
+            } catch (Exception e) {
+                // Ignore CSS error
+            }
+
             dialog.showAndWait();
         }
     }

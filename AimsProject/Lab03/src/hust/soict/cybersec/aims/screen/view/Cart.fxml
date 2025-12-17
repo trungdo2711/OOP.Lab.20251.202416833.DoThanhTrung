@@ -15,10 +15,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@storestyle.css" fx:controller="hust.soict.cybersec.aims.screen.controller.CartScreenController" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <VBox prefHeight="-1.0" BorderPane.alignment="CENTER">
             <children>
@@ -39,16 +38,14 @@
                         </Menu>
                     </menus>
                 </MenuBar>
-                <Label text="CART">
+
+                <Label styleClass="label-header" text="CART">
                     <font>
                         <Font size="50.0" />
                     </font>
                     <VBox.margin>
                         <Insets left="10.0" />
                     </VBox.margin>
-                    <textFill>
-                        <Color red="0.0" green="1.0" blue="1.0" opacity="1.0" />
-                    </textFill>
                 </Label>
             </children>
         </VBox>
@@ -84,7 +81,7 @@
                         <TableColumn fx:id="colMediaCost" prefWidth="75.0" text="Cost" />
                     </columns>
                 </TableView>
-                <ButtonBar>
+                <ButtonBar prefHeight="40.0" prefWidth="200.0">
                     <buttons>
                         <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#btnPlayPressed" text="Play" />
                         <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#btnRemovePressed" text="Remove" />
@@ -94,7 +91,7 @@
         </VBox>
     </center>
     <right>
-        <VBox alignment="TOP_CENTER" prefWidth="-1.0" BorderPane.alignment="CENTER">
+        <VBox alignment="TOP_CENTER" prefWidth="200.0" BorderPane.alignment="CENTER">
             <padding>
                 <Insets top="50.0" />
             </padding>
@@ -110,23 +107,28 @@
                             <font>
                                 <Font size="24.0" />
                             </font>
-                            <textFill>
-                                <Color red="0.0" green="1.0" blue="1.0" opacity="1.0" />
-                            </textFill>
                         </Label>
                     </children>
                 </HBox>
-                <Button fx:id="placeOrder" mnemonicParsing="false" onAction="#placeOrderPressed" style="-fx-background-color: red;" text="Place order">
+
+                <Button fx:id="placeOrder" mnemonicParsing="false" onAction="#placeOrderPressed" text="Place Order">
                     <font>
                         <Font size="24.0" />
                     </font>
                     <VBox.margin>
                         <Insets top="20.0" />
                     </VBox.margin>
-                    <textFill>
-                        <Color red="1.0" green="1.0" blue="1.0" opacity="1.0" />
-                    </textFill>
                 </Button>
+
+                <Button mnemonicParsing="false" onAction="#btnViewStorePressed" text="View Store">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Button>
+
             </children>
         </VBox>
     </right>
