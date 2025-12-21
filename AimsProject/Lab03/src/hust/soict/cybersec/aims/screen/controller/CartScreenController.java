@@ -1,7 +1,7 @@
 package hust.soict.cybersec.aims.screen.controller;
 
 import hust.soict.cybersec.aims.cart.Cart.Cart2;
-import hust.soict.cybersec.aims.exception.PlayerException; // Import Custom Exception
+import hust.soict.cybersec.aims.exception.PlayerException;
 import hust.soict.cybersec.aims.media.*;
 import hust.soict.cybersec.aims.screen.StoreScreenFX;
 import hust.soict.cybersec.aims.store.Store.Store;
@@ -59,12 +59,10 @@ public class CartScreenController {
         btnPlay.setDisable(true);
         btnRemove.setDisable(true);
 
-        // Apply CSS classes
         btnRemove.getStyleClass().add("button-danger");
         costLabel.getStyleClass().add("label-cost");
         placeOrder.getStyleClass().add("button");
 
-        // Table Selection Logic
         tblMedia.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<Media>() {
                     @Override
@@ -88,15 +86,12 @@ public class CartScreenController {
                 }
         );
 
-        // Filter Logic
         tfFilter.textProperty().addListener((observable, oldValue, newValue) -> showFilteredMedia(newValue));
 
-        // Update filter when Radio Button changes
         radioBtnFilterId.selectedProperty().addListener((obs, oldV, newV) -> showFilteredMedia(tfFilter.getText()));
         radioBtnFilterTitle.selectedProperty().addListener((obs, oldV, newV) -> showFilteredMedia(tfFilter.getText()));
     }
 
-    // --- HELPER TO STYLE ALERTS ---
     private void setStyle(Dialog<?> dialog) {
         DialogPane dialogPane = dialog.getDialogPane();
         try {
@@ -123,12 +118,8 @@ public class CartScreenController {
 
         if (media instanceof Playable) {
             try {
-                // 1. CALL BACKEND PLAY()
-                // This triggers validation inside DigitalVideoDisc or CompactDisc
-                // It throws PlayerException if length <= 0
                 ((Playable) media).play();
 
-                // 2. SHOW DIALOG IF SUCCESSFUL
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("AIMS Player");
                 alert.setHeaderText("Now Playing: " + media.getTitle());
@@ -161,7 +152,6 @@ public class CartScreenController {
                 alert.showAndWait();
 
             } catch (PlayerException e) {
-                // 3. CATCH PLAYBACK ERROR
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Playback Error");
                 alert.setHeaderText("Cannot play media!");
@@ -189,7 +179,6 @@ public class CartScreenController {
             setStyle(alert);
             alert.showAndWait();
         } else {
-            // Use cart.placeOrder() if available, otherwise manual alert
             Alert alert = new Alert(AlertType.INFORMATION, "Total Cost: " + String.format("%.2f $", cart.totalCost()));
             alert.setTitle("Order Placed");
             alert.setHeaderText("Thank you for your order!");

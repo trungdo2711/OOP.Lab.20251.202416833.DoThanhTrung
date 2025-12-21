@@ -1,16 +1,14 @@
 package hust.soict.cybersec.aims.store.Store;
 
-import hust.soict.cybersec.aims.media.DigitalVideoDisc2;
 import hust.soict.cybersec.aims.media.Media;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Store {
+    private ObservableList<Media> itemsInStore;
 
-public class Store{
-    private ArrayList<Media> itemsInStore;
-
-    public Store(){
-        this.itemsInStore = new ArrayList<>();
+    public Store() {
+        this.itemsInStore = FXCollections.observableArrayList();
     }
 
     public void addMedia(Media media) {
@@ -23,16 +21,15 @@ public class Store{
         }
 
         if (isExist) {
-            System.out.println("Media is already added");
+            System.out.println("Media '" + media.getTitle() + "' is already in the store.");
         } else {
             itemsInStore.add(media);
-            System.out.println("Media " + media.getTitle() + " added");
+            System.out.println("Media '" + media.getTitle() + "' has been added.");
         }
     }
 
     public void removeMedia(Media media) {
         Media mediaToRemove = null;
-
         for (Media item : itemsInStore) {
             if (item.getTitle().equalsIgnoreCase(media.getTitle())) {
                 mediaToRemove = item;
@@ -42,24 +39,22 @@ public class Store{
 
         if (mediaToRemove != null) {
             itemsInStore.remove(mediaToRemove);
-            System.out.println("Media " + media.getTitle() + " removed");
+            System.out.println("Media '" + media.getTitle() + "' removed.");
         } else {
-            System.out.println("Media " + media.getTitle() + " is not in the store");
+            System.out.println("Media '" + media.getTitle() + "' is not in the store.");
         }
     }
 
-    public Media search (String title){
-        for (Media media : itemsInStore){
-            if (media.getTitle().equalsIgnoreCase(title)){
+    public Media search(String title) {
+        for (Media media : itemsInStore) {
+            if (media.getTitle().equalsIgnoreCase(title)) {
                 return media;
             }
         }
         return null;
     }
 
-    public List<Media> getItemsInStore() {
-        List<Media> itemsToReturn = new ArrayList<>();
-        itemsToReturn.addAll(itemsInStore);
-        return itemsToReturn;
+    public ObservableList<Media> getItemsInStore() {
+        return itemsInStore;
     }
 }

@@ -47,7 +47,6 @@ public class StoreScreenFX extends Application {
             store.addMedia(new DigitalVideoDisc2("Up", "Animation", "Pete Docter", 96, 15.00f));
             store.addMedia(new DigitalVideoDisc2("Wall-E", "Animation", "Andrew Stanton", 98, 16.00f));
 
-            // --- BOOKS ---
             store.addMedia(new Book("The Age of Innocence", "Literature", 12.50f));
             store.addMedia(new Book("Snow Crash", "Sci-Fi", 9.99f));
             store.addMedia(new Book("Effective Java", "Programming", 45.00f));
@@ -59,7 +58,6 @@ public class StoreScreenFX extends Application {
             store.addMedia(new Book("Brave New World", "Sci-Fi", 9.00f));
             store.addMedia(new Book("Head First Java", "Programming", 28.00f));
 
-            // --- CDs ---
             CompactDisc cd1 = new CompactDisc("Retro Future", "Synthwave", "Neon Rider", 18.99f, 0, "None");
             cd1.addTrack(new Track("Grid Runners", 285));
             cd1.addTrack(new Track("Cyber City", 300));
@@ -81,7 +79,6 @@ public class StoreScreenFX extends Application {
             cd4.addTrack(new Track("Something", 183));
             store.addMedia(cd4);
 
-            // --- ERROR TESTING ---
             store.addMedia(new DigitalVideoDisc2("Broken Movie", "Error", "Unknown", 0, 5.00f));
         }
     }
@@ -108,7 +105,6 @@ public class StoreScreenFX extends Application {
         try {
             scene.getStylesheets().add(getClass().getResource("/hust/soict/cybersec/aims/screen/view/storestyle.css").toExternalForm());
         } catch (Exception e) {
-            // Warning suppressed for cleaner console
         }
 
         primaryStage.setTitle("Store");
@@ -277,13 +273,12 @@ public class StoreScreenFX extends Application {
                 dialogPane.getStylesheets().add(getClass().getResource("/hust/soict/cybersec/aims/screen/view/storestyle.css").toExternalForm());
                 dialogPane.getStyleClass().add("dialog-pane");
             } catch (Exception ex) {
-                // Ignore missing CSS
             }
         }
 
         private void showPlayDialog(Media media) throws PlayerException {
             Dialog<Void> dialog = new Dialog<>();
-            dialog.setTitle("UPDATED PLAYER"); // Verify title updated
+            dialog.setTitle("UPDATED PLAYER");
             dialog.setHeaderText("Now Playing: " + media.getTitle());
 
             StringBuilder info = new StringBuilder();
@@ -326,7 +321,6 @@ public class StoreScreenFX extends Application {
                 );
                 dialog.getDialogPane().getStyleClass().add("dialog-pane");
             } catch (Exception e) {
-                // Ignore CSS error
             }
 
             dialog.showAndWait();

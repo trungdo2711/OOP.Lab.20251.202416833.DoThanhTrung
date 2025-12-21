@@ -16,21 +16,17 @@ public class Cart2 {
     public static final int MAX_NUMBERS_ORDERED = 20;
     private ArrayList<Media> itemsOrdered = new ArrayList<>();
 
-    // --- MODIFIED METHOD: Throws exceptions instead of just printing ---
     public void addMedia(Media media) throws LimitExceededException, DuplicateItemException {
-        // 1. Check if Cart is Full
         if (itemsOrdered.size() >= MAX_NUMBERS_ORDERED) {
             throw new LimitExceededException("ERROR: The cart is full (limit " + MAX_NUMBERS_ORDERED + ").");
         }
 
-        // 2. Check for Duplicates (based on Title)
         for (Media item : itemsOrdered) {
             if (item.getTitle().equalsIgnoreCase(media.getTitle())) {
                 throw new DuplicateItemException("ERROR: " + media.getTitle() + " is already in the cart!");
             }
         }
 
-        // 3. Add Item if no errors
         itemsOrdered.add(media);
         System.out.println("Media " + media.getTitle() + " added");
     }

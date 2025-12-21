@@ -20,7 +20,6 @@ public class CartScreen extends Stage {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/hust/soict/cybersec/aims/screen/view/Cart.fxml"));
 
-            // Define the controller with the cart and store
             loader.setControllerFactory(param -> new CartScreenController(cart, store));
 
             Parent root = loader.load();
