@@ -20,13 +20,9 @@ public class AddDigitalVideoDiscToStoreScreen extends AddItemToStoreScreen {
 
     @Override
     protected void addSpecificFields(GridPane grid) {
-        tfDirector = new TextField();
-        tfDirector.setPromptText("Director Name");
+        tfDirector = createStyledTextField("Director Name");
+        tfLength = createStyledTextField("Length (minutes)");
 
-        tfLength = new TextField();
-        tfLength.setPromptText("Length (minutes)");
-
-        // Add specific fields starting from Row 3
         addInputField(grid, "Director:", tfDirector, 3);
         addInputField(grid, "Length:", tfLength, 4);
     }
@@ -34,12 +30,19 @@ public class AddDigitalVideoDiscToStoreScreen extends AddItemToStoreScreen {
     @Override
     protected void handleAdd() {
         try {
-            String title = tfTitle.getText();
-            String category = tfCategory.getText();
-            String director = tfDirector.getText();
+            String title = tfTitle.getText().trim();
+            String category = tfCategory.getText().trim();
+            String director = tfDirector.getText().trim();
+
+            if (title.isEmpty()) { showErrorAlert("Title cannot be empty!"); return; }
+            if (category.isEmpty()) { showErrorAlert("Category cannot be empty!"); return; }
+            if (director.isEmpty()) { showErrorAlert("Director cannot be empty!"); return; }
 
             float cost = Float.parseFloat(tfCost.getText());
             int length = Integer.parseInt(tfLength.getText());
+
+            if (cost < 0) { showErrorAlert("Cost cannot be negative!"); return; }
+            if (length < 0) { showErrorAlert("Length cannot be negative!"); return; }
 
             DigitalVideoDisc2 dvd = new DigitalVideoDisc2(title, category, director, length, cost);
             store.addMedia(dvd);

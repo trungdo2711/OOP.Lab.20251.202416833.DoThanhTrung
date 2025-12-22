@@ -21,14 +21,9 @@ public class AddCompactDiscToStoreScreen extends AddItemToStoreScreen {
 
     @Override
     protected void addSpecificFields(GridPane grid) {
-        tfArtist = new TextField();
-        tfArtist.setPromptText("Artist Name");
-
-        tfDirector = new TextField();
-        tfDirector.setPromptText("Director Name");
-
-        tfLength = new TextField();
-        tfLength.setPromptText("Length (minutes)");
+        tfArtist = createStyledTextField("Artist Name");
+        tfDirector = createStyledTextField("Director Name");
+        tfLength = createStyledTextField("Length (minutes)");
 
         addInputField(grid, "Artist:", tfArtist, 3);
         addInputField(grid, "Director:", tfDirector, 4);
@@ -38,13 +33,22 @@ public class AddCompactDiscToStoreScreen extends AddItemToStoreScreen {
     @Override
     protected void handleAdd() {
         try {
-            String title = tfTitle.getText();
-            String category = tfCategory.getText();
-            String artist = tfArtist.getText();
-            String director = tfDirector.getText();
+            String title = tfTitle.getText().trim();
+            String category = tfCategory.getText().trim();
+            String artist = tfArtist.getText().trim();
+            String director = tfDirector.getText().trim();
+
+            // Validation
+            if (title.isEmpty()) { showErrorAlert("Title cannot be empty!"); return; }
+            if (category.isEmpty()) { showErrorAlert("Category cannot be empty!"); return; }
+            if (artist.isEmpty()) { showErrorAlert("Artist cannot be empty!"); return; }
+            if (director.isEmpty()) { showErrorAlert("Director cannot be empty!"); return; }
 
             float cost = Float.parseFloat(tfCost.getText());
             int length = Integer.parseInt(tfLength.getText());
+
+            if (cost < 0) { showErrorAlert("Cost cannot be negative!"); return; }
+            if (length < 0) { showErrorAlert("Length cannot be negative!"); return; }
 
             CompactDisc cd = new CompactDisc(title, category, artist, cost, length, director);
             store.addMedia(cd);

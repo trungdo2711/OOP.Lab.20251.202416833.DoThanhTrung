@@ -89,7 +89,8 @@ public abstract class AddItemToStoreScreen extends Stage {
         this.setResizable(false);
     }
 
-    private TextField createStyledTextField(String prompt) {
+    // CHANGED TO PROTECTED SO SUBCLASSES CAN USE IT
+    protected TextField createStyledTextField(String prompt) {
         TextField tf = new TextField();
         tf.setPromptText(prompt);
         tf.setPrefHeight(35);
